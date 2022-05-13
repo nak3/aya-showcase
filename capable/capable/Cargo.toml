@@ -1,0 +1,23 @@
+[package]
+name = "capable"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+aya = { git = "https://github.com/aya-rs/aya", commit="7d08783b181ac883e6a907201c4f0e9446abeb2d", features=["async_tokio"] }
+capable-common = { path = "../capable-common", features=["user"] }
+anyhow = "1.0.42"
+bytes = "1"
+phf = { version = "0.10", features = ["macros"] }
+# time = { version = "0.3", features = ["formatting", "local-offset", "macros"]}
+chrono = "0.4"
+
+log = "0.4"
+simplelog = "0.11"
+structopt = { version = "0.3" }
+tokio = { version = "1.5.0", features = ["macros", "rt", "rt-multi-thread", "net", "signal"] }
+
+[[bin]]
+name = "capable"
+path = "src/main.rs"
