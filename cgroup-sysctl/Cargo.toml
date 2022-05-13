@@ -1,0 +1,5 @@
+[workspace]
+members = ["cgroup-sysctl", "cgroup-sysctl-common", "xtask"]
+
+[patch.crates-io]
+aya = { git = "https://github.com/nak3/aya", branch = "add-cgroup-sysctl" }
