@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-# aya-bpf = { git = "https://github.com/nak3/aya", branch = "add-cgroup-sysctl" }
-aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
+aya-bpf = { git = "https://github.com/nak3/aya", branch = "add-cgroup-sysctl" }
+# aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
 aya-log-ebpf = { git = "https://github.com/aya-rs/aya-log", branch = "main" }
 cgroup-sysctl-common = { path = "../cgroup-sysctl-common" }
 
