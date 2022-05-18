@@ -1,0 +1,6 @@
+[workspace]
+members = ["cgroup-sockopt", "cgroup-sockopt-common", "xtask"]
+
+[patch.crates-io]
+# aya = { git = "https://github.com/nak3/aya", branch = "add-cgroup-sockopt" }
+aya = { path = "../../../dev/aya/aya" }
