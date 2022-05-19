@@ -1,6 +1,8 @@
 #![no_std]
 #![no_main]
 
+use core::ffi::c_void;
+
 use aya_bpf::{
     macros::{cgroup_sockopt, map},
     maps::PerfEventArray,
@@ -25,10 +27,14 @@ static mut EVENTS: PerfEventArray<Event> = PerfEventArray::<Event>::with_max_ent
 unsafe fn try_cgroup_sockopt(ctx: SockoptContext) -> Result<i32, i32> {
     let mut buf: [c_char; 16] = [0; 16];
 
+    let TCP_CONGESTION = 13;
+    let SOL_TCP = 6;
+
     let sockopt = ctx.sockopt;
     //let ret = bpf_getsockopt(ctx.sockopt, 0, &mut buf as *mut _ as *mut c_char, 16, 0);
     //let ret = bpf_getsockopt(ctx.sockopt, sockopt.level, sockopt.optname, sockopt.optval, sockopt.optlen);
-    let ret = bpf_getsockopt(ctx.sockopt, (*sockopt).level, (*sockopt).optname, (*sockopt).optval(), (*sockopt).optlen);
+    //let ret = bpf_getsockopt(ctx.sockopt, (*sockopt).level, (*sockopt).optname, (*sockopt).optval(), (*sockopt).optlen);
+    let ret = bpf_getsockopt((*ctx.sockopt).__bindgen_anon_1.sk as *mut _ as *mut c_void, SOL_TCP, TCP_CONGESTION, &mut buf as *mut _ as *mut c_void, 16);
     // TODO: handle ret
 
     let event = Event { name: buf };
