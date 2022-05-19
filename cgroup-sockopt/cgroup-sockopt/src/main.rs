@@ -1,5 +1,5 @@
 use aya::maps::perf::AsyncPerfEventArray;
-use aya::programs::CgroupSockopt;
+use aya::programs::{CgroupSockopt, CgroupSockoptAttachType};
 use aya::util::online_cpus;
 use aya::{include_bytes_aligned, Bpf};
 
@@ -51,8 +51,12 @@ async fn main() -> Result<(), anyhow::Error> {
         "/sys/fs/cgroup".to_string()
     };
     let cgroup = std::fs::File::open(cgroup_path)?;
-    program.load()?;
-    program.attach(cgroup)?;
+    println!("test...");
+    program.load(CgroupSockoptAttachType::Get)?;
+    println!("test...");
+    program.attach(cgroup, CgroupSockoptAttachType::Get)?;
+
+    println!("test...");
 
     let mut perf_array = AsyncPerfEventArray::try_from(bpf.map_mut("EVENTS")?)?;
 
@@ -72,10 +76,13 @@ async fn main() -> Result<(), anyhow::Error> {
                     let event = unsafe { ptr.read_unaligned() };
                     let name = &event.name;
 
+                    /*
                     let str_buf =
                         String::from_utf8(name.iter().map(|&c| c as u8).collect()).unwrap();
+                        */
 
-                    println!("{:<20}", str_buf,);
+                    //println!("{:<20}", str_buf,);
+                    println!("{:<20}", name);
                 }
             }
         });
