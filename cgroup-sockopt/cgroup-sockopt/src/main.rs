@@ -1,5 +1,5 @@
 use aya::maps::perf::AsyncPerfEventArray;
-use aya::programs::{CgroupSockopt, CgroupSockoptAttachType};
+use aya::programs::CgroupSockopt;
 use aya::util::online_cpus;
 use aya::{include_bytes_aligned, Bpf};
 use aya_log::BpfLogger;
@@ -76,8 +76,8 @@ async fn main() -> Result<(), anyhow::Error> {
     BpfLogger::init(&mut bpf)?;
     let program: &mut CgroupSockopt = bpf.program_mut("cgroup_sockopt").unwrap().try_into()?;
     let cgroup = std::fs::File::open(opt.cgroup_path)?;
-    program.load(CgroupSockoptAttachType::Get)?;
-    program.attach(cgroup, CgroupSockoptAttachType::Get)?;
+    program.load()?;
+    program.attach(cgroup)?;
 
     let mut perf_array = AsyncPerfEventArray::try_from(bpf.map_mut("EVENTS")?)?;
 

@@ -10,7 +10,7 @@ use aya_bpf::{
 use aya_log_ebpf::info;
 use cgroup_sockopt_common::Event;
 
-#[cgroup_sockopt(name = "cgroup_sockopt", attach = "getsockopt")]
+#[cgroup_sockopt(getsockopt,name="cgroup_sockopt")]
 pub fn cgroup_sockopt(ctx: SockoptContext) -> i32 {
     match unsafe { try_cgroup_sockopt(ctx) } {
         Ok(ret) => ret,

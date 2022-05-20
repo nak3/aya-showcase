@@ -5,8 +5,8 @@ edition = "2021"
 publish = false
 
 [dependencies]
-# aya = { git = "https://github.com/nak3/aya", branch = "add-cgroup-sockopt", features=["async_tokio"] }
-aya = { path = "../../../../dev/aya/aya", features=["async_tokio"] }
+aya = "0.10"
+#aya = { path = "../../../../dev/aya/aya", features=["async_tokio"] }
 aya-log = "0.1"
 cgroup-sockopt-common = { path = "../cgroup-sockopt-common", features=["user"] }
 anyhow = "1.0.42"
