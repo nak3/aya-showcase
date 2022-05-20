@@ -4,8 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-#aya-bpf = { git = "https://github.com/nak3/aya", branch = "add-cgroup-sockopt" }
-aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
+aya-bpf = { git = "https://github.com/aya-rs/aya", branch = "main" }
 aya-log-ebpf = { git = "https://github.com/aya-rs/aya-log", branch = "main" }
 cgroup-sockopt-common = { path = "../cgroup-sockopt-common" }
 
@@ -31,3 +30,8 @@ codegen-units = 1
 
 [workspace]
 members = []
+
+[patch.crates-io]
+aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
+[patch."https://github.com/aya-rs/aya"]
+aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }

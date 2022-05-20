@@ -15,6 +15,7 @@ clap = { version = "3.1", features = ["derive"] }
 log = "0.4"
 simplelog = "0.12"
 tokio = { version = "1.18", features = ["macros", "rt", "rt-multi-thread", "net", "signal"] }
+phf = { version = "0.10", features = ["macros"] }
 
 [[bin]]
 name = "cgroup-sockopt"

@@ -5,7 +5,6 @@
 #[repr(packed)]
 #[derive(Debug)]
 pub struct Event {
-    //pub name: [i8; 16],
     pub name: i32,
 }
 
