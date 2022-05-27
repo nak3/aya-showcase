@@ -1,0 +1,42 @@
+[package]
+name = "bloom-filter-ebpf"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+aya-bpf = { git = "https://github.com/aya-rs/aya", branch = "main" }
+aya-log-ebpf = { git = "https://github.com/aya-rs/aya-log", branch = "main" }
+
+# aya-bpf = { git = "https://github.com/aya-rs/aya", branch = "main" }
+#aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
+#aya-log-ebpf = { git = "https://github.com/aya-rs/aya-log", branch = "main" }
+
+[[bin]]
+name = "bloom-filter"
+path = "src/main.rs"
+
+[profile.dev]
+opt-level = 3
+debug = false
+debug-assertions = false
+overflow-checks = false
+lto = true
+panic = "abort"
+incremental = false
+codegen-units = 1
+rpath = false
+
+[profile.release]
+lto = true
+panic = "abort"
+codegen-units = 1
+
+[workspace]
+members = []
+
+[patch.crates-io]
+aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
+## aya-bpf = { git = "https://github.com/nak3/aya", branch = "add-bloom-filter" }
+[patch."https://github.com/aya-rs/aya"]
+aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
+## aya-bpf = { git = "https://github.com/nak3/aya", branch = "add-bloom-filter" }

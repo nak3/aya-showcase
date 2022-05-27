@@ -1,0 +1,6 @@
+[workspace]
+members = ["bloom-filter", "bloom-filter-common", "xtask"]
+
+[patch.crates-io]
+# aya = { git = "https://github.com/nak3/aya", branch = "add-bloom-filter" }
+aya = { path = "../../../dev/aya/aya" }
