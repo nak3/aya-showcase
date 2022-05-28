@@ -5,8 +5,7 @@ edition = "2021"
 publish = false
 
 [dependencies]
-# aya = "0.10"
-aya = { path = "../../../../dev/aya/aya", features=["async_tokio"] }
+aya = "0.10"
 aya-log = "0.1"
 bloom-filter-common = { path = "../bloom-filter-common", features=["user"] }
 anyhow = "1.0.42"
