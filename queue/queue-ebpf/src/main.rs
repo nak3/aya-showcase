@@ -21,6 +21,21 @@ pub fn cgroup_sysctl(ctx: SysctlContext) -> i32 {
 static mut QUEUE: Queue<u32> = Queue::<u32>::with_max_entries(10, 0);
 
 unsafe fn try_cgroup_sysctl(ctx: SysctlContext) -> Result<i32, i32> {
+    /*
+    match Queue::<u32>::push(&mut QUEUE, &1, 0) {
+        Ok(()) => info!(&ctx, "value pushed"),
+        Err(e) => info!(&ctx, "failed to push {}", e),
+    }
+    match Queue::<u32>::push(&mut QUEUE, &2, 0) {
+        Ok(()) => info!(&ctx, "value pushed"), // This should be empty.
+        Err(e) => info!(&ctx, "failed to push {}", e),
+    }
+    */
+
+    match Queue::<u32>::pop(&mut QUEUE) {
+        Some(val) => info!(&ctx, "value {} found", val), // This should be empty.
+        None => info!(&ctx, "not found"),
+    }
     match Queue::<u32>::pop(&mut QUEUE) {
         Some(val) => info!(&ctx, "value {} found", val), // This should be empty.
         None => info!(&ctx, "not found"),
