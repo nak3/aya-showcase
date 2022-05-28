@@ -32,7 +32,7 @@ members = []
 
 [patch.crates-io]
 # aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
-aya-bpf = { git = "https://github.com/nak3/aya", branch = "fix-ret-map" }
+# aya-bpf = { git = "https://github.com/nak3/aya", branch = "fix-ret-map" }
 [patch."https://github.com/aya-rs/aya"]
 # aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
-aya-bpf = { git = "https://github.com/nak3/aya", branch = "fix-ret-map" }
+# aya-bpf = { git = "https://github.com/nak3/aya", branch = "fix-ret-map" }
