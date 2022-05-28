@@ -1,0 +1,6 @@
+[workspace]
+members = ["queue", "queue-common", "xtask"]
+
+[patch.crates-io]
+# aya = { git = "https://github.com/nak3/aya", branch = "add-queue" }
+aya = { path = "../../../dev/aya/aya" }
