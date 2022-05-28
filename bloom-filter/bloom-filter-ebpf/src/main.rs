@@ -22,7 +22,7 @@ static mut BLOOM_FILTER: BloomFilter<u32> = BloomFilter::<u32>::with_max_entries
 
 unsafe fn try_cgroup_sysctl(ctx: SysctlContext) -> Result<i32, i32> {
     for key in 100..102 {
-        match BloomFilter::<u32>::insert(&mut BLOOM_FILTER, key, 0) {
+        match BloomFilter::<u32>::insert(&mut BLOOM_FILTER, &key, 0) {
             Ok(()) => info!(&ctx, "key {} is inserted from BPF", key),
             Err(e) => info!(
                 &ctx,
@@ -32,7 +32,7 @@ unsafe fn try_cgroup_sysctl(ctx: SysctlContext) -> Result<i32, i32> {
     }
 
     for key in 100..103 {
-        match BloomFilter::<u32>::contains(&mut BLOOM_FILTER, key) {
+        match BloomFilter::<u32>::contains(&mut BLOOM_FILTER, &key) {
             Ok(()) => info!(&ctx, "key {} found from BPF", key),
             Err(e) => info!(&ctx, "key {} not found from BPF {}", key, e),
         }
@@ -43,7 +43,7 @@ unsafe fn try_cgroup_sysctl(ctx: SysctlContext) -> Result<i32, i32> {
         "Let's check key 0 and 1 that were interted from userspace."
     );
     for key in 0..3 {
-        match BloomFilter::<u32>::contains(&mut BLOOM_FILTER, key) {
+        match BloomFilter::<u32>::contains(&mut BLOOM_FILTER, &key) {
             Ok(()) => info!(&ctx, "key {} found from BPF", key),
             Err(e) => info!(&ctx, "key {} not found from BPF with error code {}", key, e),
         }
