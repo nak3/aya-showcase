@@ -52,7 +52,7 @@ async fn main() -> Result<(), anyhow::Error> {
         println!("key {} is inserted", key);
     }
     for key in 0..3 {
-        match bloom_filter.contains(key, 0) {
+        match bloom_filter.contains(&key, 0) {
             Ok(()) => println!("key {} found", key),
             Err(e) => println!("key {} not found with error: {}", key, e),
         }
