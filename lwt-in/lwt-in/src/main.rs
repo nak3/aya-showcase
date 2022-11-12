@@ -1,5 +1,5 @@
 use aya::{include_bytes_aligned, Bpf};
-use aya::{programs::Lsm, Btf};
+use aya::{programs::LwtIn, Btf};
 use aya_log::BpfLogger;
 use clap::Parser;
 use log::{info, warn};
@@ -33,7 +33,7 @@ async fn main() -> Result<(), anyhow::Error> {
         warn!("failed to initialize eBPF logger: {}", e);
     }
     let btf = Btf::from_sys_fs()?;
-    let program: &mut Lsm = bpf.program_mut("file_open").unwrap().try_into()?;
+    let program: &mut LwtIn = bpf.program_mut("file_open").unwrap().try_into()?;
     program.load("file_open", &btf)?;
     program.attach()?;
 

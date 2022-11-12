@@ -3,6 +3,7 @@
 
 use aya_bpf::{
     programs::LwtInContext,
+    helpers::bpf_lwt_push_encap,
 };
 
 use aya_bpf_macros::lwt_in;
