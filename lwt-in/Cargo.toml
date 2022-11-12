@@ -4,5 +4,5 @@ members = ["lwt-in", "lwt-in-common", "xtask"]
 [patch.crates-io]
 #aya = { git = "https://github.com/aya-rs/aya", branch = "main" }
 # 
-aya = { git = "https://github.com/nak3/aya", branch = "add-lwt" }
-#aya = { path = "../../../dev/aya/aya" }
+#aya = { git = "https://github.com/nak3/aya", branch = "add-lwt" }
+aya = { path = "../../../dev/aya/aya" }
