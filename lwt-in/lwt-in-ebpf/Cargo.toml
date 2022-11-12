@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 aya-bpf = { git = "https://github.com/aya-rs/aya", branch = "main" }
+aya-bpf-macros = { git = "https://github.com/aya-rs/aya", branch = "main" }
 aya-log-ebpf = { git = "https://github.com/aya-rs/aya", branch = "main" }
 lwt-in-common = { path = "../lwt-in-common" }
 
@@ -33,7 +34,9 @@ members = []
 
 [patch.crates-io]
 aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
+aya-bpf-macros = { path = "../../../../dev/aya/aya-bpf-macros" }
 #aya-bpf = { git = "https://github.com/nak3/aya", branch = "add-lwt" }
 [patch."https://github.com/aya-rs/aya"]
- aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
+aya-bpf = { path = "../../../../dev/aya/bpf/aya-bpf" }
+aya-bpf-macros = { path = "../../../../dev/aya/aya-bpf-macros" }
 #aya-bpf = { git = "https://github.com/nak3/aya", branch = "add-lwt" }

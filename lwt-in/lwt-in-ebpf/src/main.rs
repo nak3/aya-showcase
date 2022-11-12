@@ -2,20 +2,22 @@
 #![no_main]
 
 use aya_bpf::{
-    macros::lsm,
-    programs::LsmContext,
+    programs::LwtInContext,
 };
+
+use aya_bpf_macros::lwt_in;
+
 use aya_log_ebpf::info;
 
-#[lsm(name="file_open")]
-pub fn file_open(ctx: LsmContext) -> i32 {
+#[lwt_in(name="file_open")]
+pub fn file_open(ctx: LwtInContext) -> i32 {
     match try_file_open(ctx) {
         Ok(ret) => ret,
         Err(ret) => ret,
     }
 }
 
-fn try_file_open(ctx: LsmContext) -> Result<i32, i32> {
+fn try_file_open(ctx: LwtInContext) -> Result<i32, i32> {
     info!(&ctx, "lsm hook file_open called");
     Ok(0)
 }
