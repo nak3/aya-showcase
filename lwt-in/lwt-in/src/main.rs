@@ -34,7 +34,7 @@ async fn main() -> Result<(), anyhow::Error> {
     }
     let btf = Btf::from_sys_fs()?;
     let program: &mut LwtIn = bpf.program_mut("encap_gre").unwrap().try_into()?;
-    program.load("encap_gre", &btf)?;
+    program.load()?;
     program.attach()?;
 
     info!("Waiting for Ctrl-C...");
