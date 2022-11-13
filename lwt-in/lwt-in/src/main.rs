@@ -33,8 +33,8 @@ async fn main() -> Result<(), anyhow::Error> {
         warn!("failed to initialize eBPF logger: {}", e);
     }
     let btf = Btf::from_sys_fs()?;
-    let program: &mut LwtIn = bpf.program_mut("file_open").unwrap().try_into()?;
-    program.load("file_open", &btf)?;
+    let program: &mut LwtIn = bpf.program_mut("encap_gre").unwrap().try_into()?;
+    program.load("encap_gre", &btf)?;
     program.attach()?;
 
     info!("Waiting for Ctrl-C...");

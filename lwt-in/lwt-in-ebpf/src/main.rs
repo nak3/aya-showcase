@@ -4,22 +4,60 @@
 use aya_bpf::{
     programs::LwtInContext,
     helpers::bpf_lwt_push_encap,
+    cty::c_char,
 };
 
 use aya_bpf_macros::lwt_in;
 
+
 use aya_log_ebpf::info;
 
-#[lwt_in(name="file_open")]
-pub fn file_open(ctx: LwtInContext) -> i32 {
-    match try_file_open(ctx) {
+/*
+ * from libbpf
+enum lwtunnel_encap_types {
+        LWTUNNEL_ENCAP_NONE = 0,
+        LWTUNNEL_ENCAP_MPLS = 1,
+        LWTUNNEL_ENCAP_IP = 2,
+        LWTUNNEL_ENCAP_ILA = 3,
+        LWTUNNEL_ENCAP_IP6 = 4,
+        LWTUNNEL_ENCAP_SEG6 = 5, 
+        LWTUNNEL_ENCAP_BPF = 6,
+        LWTUNNEL_ENCAP_SEG6_LOCAL = 7,
+        LWTUNNEL_ENCAP_RPL = 8,
+        LWTUNNEL_ENCAP_IOAM6 = 9,
+        __LWTUNNEL_ENCAP_MAX = 10,
+}; 
+
+struct lwtunnel_encap_ops {
+        int (*build_state)(struct net *, struct nlattr *, unsigned int, const void *, struct lwtunnel_state **, struct netlink_ext_ack *);
+        void (*destroy_state)(struct lwtunnel_state *);
+        int (*output)(struct net *, struct sock *, struct sk_buff *);
+        int (*input)(struct sk_buff *);
+        int (*fill_encap)(struct sk_buff *, struct lwtunnel_state *);
+        int (*get_encap_size)(struct lwtunnel_state *);
+        int (*cmp_encap)(struct lwtunnel_state *, struct lwtunnel_state *);
+        int (*xmit)(struct sk_buff *);
+        struct module *owner;
+};
+
+*/
+
+#[lwt_in(name="encap_gre")]
+pub fn encap_gre(ctx: LwtInContext) -> i32 {
+    match try_encap_gre(ctx) {
         Ok(ret) => ret,
         Err(ret) => ret,
     }
 }
 
-fn try_file_open(ctx: LwtInContext) -> Result<i32, i32> {
-    info!(&ctx, "lsm hook file_open called");
+fn try_encap_gre(ctx: LwtInContext) -> Result<i32, i32> {
+    info!(&ctx, "LWT_IN encap_gre called");
+
+    // see ./tools/testing/selftests/bpf/progs/test_lwt_ip_encap.c
+    //
+    //let ret = bpf_lwt_push_encap(&mut ctx.skb as *mut _ as *mut c_char, 16, 0);
+    let ret = bpf_lwt_push_encap(ctx.skb.skb, 3, 16, 0);
+
     Ok(0)
 }
 
