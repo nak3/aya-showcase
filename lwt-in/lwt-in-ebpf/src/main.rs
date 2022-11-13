@@ -1,11 +1,17 @@
 #![no_std]
 #![no_main]
 
+use aya_bpf_cty::c_void;
+
 use aya_bpf::{
     programs::LwtInContext,
     helpers::bpf_lwt_push_encap,
     cty::c_char,
+//    bindings::iphdr,
 };
+use core::mem;
+
+
 
 use aya_bpf_macros::lwt_in;
 
@@ -42,6 +48,7 @@ struct lwtunnel_encap_ops {
 
 */
 
+
 #[lwt_in(name="encap_gre")]
 pub fn encap_gre(ctx: LwtInContext) -> i32 {
     match try_encap_gre(ctx) {
@@ -50,13 +57,34 @@ pub fn encap_gre(ctx: LwtInContext) -> i32 {
     }
 }
 
+pub struct grehdr {
+
+}
+
+pub struct iphdr {
+
+}
+
+pub struct encap_hdr {
+    ip_hdr: iphdr,
+    gre_hdr: grehdr,
+}   
+
 fn try_encap_gre(ctx: LwtInContext) -> Result<i32, i32> {
     info!(&ctx, "LWT_IN encap_gre called");
 
-    // see ./tools/testing/selftests/bpf/progs/test_lwt_ip_encap.c
+    let mut hdr = encap_hdr{ 
+        //ip_hdr: iphdr{_unused: []},
+        ip_hdr: iphdr{},
+        gre_hdr: grehdr{},
+    };
+
+    // see linux's ./tools/testing/selftests/bpf/progs/test_lwt_ip_encap.c
     //
     //let ret = bpf_lwt_push_encap(&mut ctx.skb as *mut _ as *mut c_char, 16, 0);
-    let ret = bpf_lwt_push_encap(ctx.skb.skb, 3, 16, 0);
+    let ret = unsafe {
+        bpf_lwt_push_encap(ctx.skb.skb,  2 /* LWTUNNEL_ENCAP_IP */, &mut hdr as *mut _ as *mut aya_bpf_cty::c_void, mem::size_of::<encap_hdr>() as u32);
+    };
 
     Ok(0)
 }
