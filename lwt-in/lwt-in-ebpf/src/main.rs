@@ -5,7 +5,7 @@ use aya_bpf_cty::c_void;
 
 use aya_bpf::{
     cty::c_char,
-    //    bindings::iphdr,
+    bindings::iphdr,
     helpers::bpf_lwt_push_encap,
     programs::LwtInContext,
 };
@@ -56,6 +56,7 @@ pub fn encap_gre(ctx: LwtInContext) -> i32 {
 #[repr(C)]
 pub struct grehdr {}
 
+/*
 #[repr(C)]
 pub struct iphdr {
     ihl: u8,     //
@@ -69,6 +70,7 @@ pub struct iphdr {
     saadr: u32,
     daadr: u32,
 }
+*/
 
 pub struct encap_hdr {
     ip_hdr: iphdr,
@@ -77,9 +79,14 @@ pub struct encap_hdr {
 
 fn try_encap_gre(ctx: LwtInContext) -> Result<i32, i32> {
     info!(&ctx, "LWT_IN encap_gre called");
+    const IP_HDR_LEN: usize = mem::size_of::<iphdr>();
+    info!(&ctx, "LWT_IN encap_gre called {}", IP_HDR_LEN);
 
+   
+    /*
     let mut hdr = encap_hdr {
         //ip_hdr: iphdr{_unused: []},
+        /*
         ip_hdr: iphdr {
             ihl: 5,     //
             version: 4, //
@@ -93,6 +100,7 @@ fn try_encap_gre(ctx: LwtInContext) -> Result<i32, i32> {
 
             daadr: 0x641010ac,
         },
+        */
         gre_hdr: grehdr {},
     };
 
@@ -107,6 +115,7 @@ fn try_encap_gre(ctx: LwtInContext) -> Result<i32, i32> {
             mem::size_of::<encap_hdr>() as u32,
         );
     };
+    */
 
     Ok(0)
 }
