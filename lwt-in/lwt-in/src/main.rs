@@ -1,5 +1,5 @@
 use aya::{include_bytes_aligned, Bpf};
-use aya::{programs::LwtIn, Btf};
+use aya::{programs::LwtIn};
 use aya_log::BpfLogger;
 use clap::Parser;
 use log::{info, warn};
@@ -30,7 +30,6 @@ async fn main() -> Result<(), anyhow::Error> {
         // This can happen if you remove all log statements from your eBPF program.
         warn!("failed to initialize eBPF logger: {}", e);
     }
-    let btf = Btf::from_sys_fs()?;
     let program: &mut LwtIn = bpf.program_mut("encap_gre").unwrap().try_into()?;
     program.load()?;
     program.attach()?;
