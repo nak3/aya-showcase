@@ -5,7 +5,6 @@ use aya_bpf_cty::c_void;
 
 use aya_bpf::{
     cty::c_char,
-    bindings::iphdr,
     helpers::bpf_lwt_push_encap,
     programs::LwtInContext,
 };
@@ -14,6 +13,11 @@ use core::mem;
 use aya_bpf_macros::lwt_in;
 
 use aya_log_ebpf::info;
+
+
+mod bindings;
+use bindings::iphdr;
+
 
 /*
  * from libbpf
