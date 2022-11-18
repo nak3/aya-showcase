@@ -5,6 +5,9 @@ use clap::Parser;
 use log::{info, warn};
 use tokio::signal;
 
+use aya::maps::SockMap;
+use aya::programs::SkSkb;
+
 #[derive(Debug, Parser)]
 struct Opt {}
 
@@ -30,9 +33,14 @@ async fn main() -> Result<(), anyhow::Error> {
         // This can happen if you remove all log statements from your eBPF program.
         warn!("failed to initialize eBPF logger: {}", e);
     }
-    let program: &mut LwtIn = bpf.program_mut("encap_gre").unwrap().try_into()?;
-    program.load()?;
-    program.attach()?;
+
+ let intercept_ingress: SockMap<_> = bpf.map("INTERCEPT_INGRESS").unwrap().try_into()?;
+ let map_fd = intercept_ingress.fd()?;
+
+let prog: &mut SkSkb = bpf.program_mut("encap_gre").unwrap().try_into()?;
+prog.load()?;
+prog.attach(map_fd)?;
+
 
     info!("Waiting for Ctrl-C...");
     signal::ctrl_c().await?;
