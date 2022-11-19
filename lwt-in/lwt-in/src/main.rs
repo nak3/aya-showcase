@@ -1,5 +1,5 @@
+use aya::programs::LwtIn;
 use aya::{include_bytes_aligned, Bpf};
-use aya::{programs::LwtIn};
 use aya_log::BpfLogger;
 use clap::Parser;
 use log::{info, warn};
@@ -34,13 +34,12 @@ async fn main() -> Result<(), anyhow::Error> {
         warn!("failed to initialize eBPF logger: {}", e);
     }
 
- let intercept_ingress: SockMap<_> = bpf.map("INTERCEPT_INGRESS").unwrap().try_into()?;
- let map_fd = intercept_ingress.fd()?;
+    let intercept_ingress: SockMap<_> = bpf.map("INTERCEPT_INGRESS").unwrap().try_into()?;
+    let map_fd = intercept_ingress.fd()?;
 
-let prog: &mut SkSkb = bpf.program_mut("encap_gre").unwrap().try_into()?;
-prog.load()?;
-prog.attach(map_fd)?;
-
+    let prog: &mut SkSkb = bpf.program_mut("encap_gre").unwrap().try_into()?;
+    prog.load()?;
+    prog.attach(map_fd)?;
 
     info!("Waiting for Ctrl-C...");
     signal::ctrl_c().await?;

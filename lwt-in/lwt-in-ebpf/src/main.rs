@@ -3,21 +3,14 @@
 
 use aya_bpf_cty::c_void;
 
-use aya_bpf::{
-    cty::c_char,
-    helpers::bpf_lwt_push_encap,
-    programs::LwtInContext,
-};
+use aya_bpf::{cty::c_char, helpers::bpf_lwt_push_encap, programs::LwtInContext};
 use core::mem;
 
 use aya_bpf_macros::lwt_in;
-
 use aya_log_ebpf::info;
-
 
 mod bindings;
 use bindings::iphdr;
-
 
 /*
  * from libbpf
@@ -57,24 +50,11 @@ pub fn encap_gre(ctx: LwtInContext) -> i32 {
     }
 }
 
+//#[map(name = "SOCK_OPS_MAP")]
+//static mut SOCK_OPS_MAP: SockMap<SockKey> = SockMap::<SockKey>::with_max_entries(1024, 0);
+
 #[repr(C)]
 pub struct grehdr {}
-
-/*
-#[repr(C)]
-pub struct iphdr {
-    ihl: u8,     //
-    version: u8, //
-    tot_len: u16,
-    id: u16,
-    flag_off: u16,
-    ttl: u8,
-    protocol: u8,
-    check: u16,
-    saadr: u32,
-    daadr: u32,
-}
-*/
 
 pub struct encap_hdr {
     ip_hdr: iphdr,
@@ -86,7 +66,6 @@ fn try_encap_gre(ctx: LwtInContext) -> Result<i32, i32> {
     const IP_HDR_LEN: usize = mem::size_of::<iphdr>();
     info!(&ctx, "LWT_IN encap_gre called {}", IP_HDR_LEN);
 
-   
     /*
     let mut hdr = encap_hdr {
         //ip_hdr: iphdr{_unused: []},
