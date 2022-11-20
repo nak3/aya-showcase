@@ -3,7 +3,9 @@
 
 use aya_bpf_cty::c_void;
 
-use aya_bpf::{cty::c_char, helpers::bpf_lwt_push_encap, programs::LwtInContext};
+use aya_bpf::{
+    cty::c_char, helpers::bpf_lwt_push_encap, macros::map, maps::SockHash, programs::LwtInContext,
+};
 use core::mem;
 
 use aya_bpf_macros::lwt_in;
@@ -11,6 +13,8 @@ use aya_log_ebpf::info;
 
 mod bindings;
 use bindings::iphdr;
+
+use lwt_in_common::SockKey;
 
 /*
  * from libbpf
@@ -50,8 +54,8 @@ pub fn encap_gre(ctx: LwtInContext) -> i32 {
     }
 }
 
-//#[map(name = "SOCK_OPS_MAP")]
-//static mut SOCK_OPS_MAP: SockMap<SockKey> = SockMap::<SockKey>::with_max_entries(1024, 0);
+#[map(name = "SOCK_OPS_MAP")]
+static mut SOCK_OPS_MAP: SockHash<SockKey> = SockHash::<SockKey>::with_max_entries(1024, 0);
 
 #[repr(C)]
 pub struct grehdr {}

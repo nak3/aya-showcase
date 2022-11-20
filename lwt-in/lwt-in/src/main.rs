@@ -5,8 +5,9 @@ use clap::Parser;
 use log::{info, warn};
 use tokio::signal;
 
+use aya::maps::SockHash;
 use aya::maps::SockMap;
-use aya::programs::SkSkb;
+use lwt_in_common::SockKey;
 
 #[derive(Debug, Parser)]
 struct Opt {}
@@ -34,10 +35,12 @@ async fn main() -> Result<(), anyhow::Error> {
         warn!("failed to initialize eBPF logger: {}", e);
     }
 
-    let intercept_ingress: SockMap<_> = bpf.map("INTERCEPT_INGRESS").unwrap().try_into()?;
+    //    let intercept_ingress = SockHash::<_, SockKey>::try_from(bpf.map_mut("SOCK_OPS_MAP")?;
+    let intercept_ingress: SockHash<_, SockKey> = bpf.map("SOCK_OPS_MAP").unwrap().try_into()?;
+
     let map_fd = intercept_ingress.fd()?;
 
-    let prog: &mut SkSkb = bpf.program_mut("encap_gre").unwrap().try_into()?;
+    let prog: &mut LwtIn = bpf.program_mut("encap_gre").unwrap().try_into()?;
     prog.load()?;
     prog.attach(map_fd)?;
 
